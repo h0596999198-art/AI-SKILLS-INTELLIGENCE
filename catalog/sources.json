@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "id": "vercel-labs-skills",
+      "url": "https://github.com/vercel-labs/skills",
+      "kind": "skill-discovery-cli",
+      "trust": "unverified",
+      "notes": "Discovery tooling reference; not an approval of skills found through it."
+    },
+    {
+      "id": "vercel-labs-agent-skills",
+      "url": "https://github.com/vercel-labs/agent-skills",
+      "kind": "skill-collection",
+      "trust": "unverified",
+      "notes": "Each skill requires independent license, security, provenance, and compatibility review."
+    }
+  ]
+}

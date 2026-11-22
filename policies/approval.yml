@@ -1,0 +1,17 @@
+version: 1
+default_status: discovered
+allowed_statuses:
+  - discovered
+  - under_review
+  - approved
+  - rejected
+approval_requirements:
+  immutable_source_commit: true
+  content_sha256: true
+  license_evidence_url: true
+  redistribution_permission: true
+  security_review: pass
+  compatibility_review: pass
+  duplicate_review: pass
+  reviewer_identity: true
+  reviewed_at_utc: true

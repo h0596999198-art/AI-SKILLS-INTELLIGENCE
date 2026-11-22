@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Skills Intelligence record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "category",
+    "source",
+    "revision",
+    "content_sha256",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "category": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "path"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{40}$"
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$"
+    },
+    "license": {
+      "type": "object"
+    },
+    "security": {
+      "type": "object"
+    },
+    "compatibility": {
+      "type": "object"
+    },
+    "duplicate_check": {
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "discovered",
+        "under_review",
+        "approved",
+        "rejected"
+      ]
+    },
+    "approval": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

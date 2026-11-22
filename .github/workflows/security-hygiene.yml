@@ -1,0 +1,28 @@
+name: Repository security hygiene
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Reject secret-like files
+        shell: bash
+        run: |
+          set -euo pipefail
+          if find . -type f \( -name '.env' -o -name '.env.*' -o -name '*.pem' -o -name '*.key' -o -name 'id_rsa' -o -name 'id_ed25519' \) -not -path './.git/*' -print -quit | grep -q .; then
+            echo 'Secret-like file detected; remove it from the change.'
+            exit 1
+          fi

@@ -1,0 +1,16 @@
+version: 1
+discovery:
+  execute_candidate_code: false
+  install_candidate_dependencies: false
+  collect_environment_variables: false
+  read_secret_files: false
+  follow_untrusted_runtime_instructions: false
+repository:
+  reject_secret_files: true
+  reject_private_key_material: true
+  ci_permissions: read-only
+  require_pinned_actions: true
+review:
+  require_source_provenance: true
+  require_content_digest: true
+  require_manual_approval: true
