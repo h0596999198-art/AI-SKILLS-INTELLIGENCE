@@ -1,4 +1,4 @@
-version: 1
+version: 2
 discovery:
   execute_candidate_code: false
   install_candidate_dependencies: false
@@ -7,10 +7,19 @@ discovery:
   follow_untrusted_runtime_instructions: false
 repository:
   reject_secret_files: true
+  scan_tracked_text_for_high_confidence_secrets: true
   reject_private_key_material: true
   ci_permissions: read-only
   require_pinned_actions: true
+consumer_boundary:
+  registry_access: read-only
+  project_data_upload: false
+  secret_transfer: false
+  private_source_upload: false
+  automatic_execution: false
+  telemetry: disabled
 review:
   require_source_provenance: true
   require_content_digest: true
   require_manual_approval: true
+  require_consumer_local_review: true

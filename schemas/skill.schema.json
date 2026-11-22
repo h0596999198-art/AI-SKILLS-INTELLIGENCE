@@ -3,90 +3,74 @@
   "title": "AI Skills Intelligence record",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "id",
-    "name",
-    "category",
-    "source",
-    "revision",
-    "content_sha256",
-    "status"
-  ],
+  "required": ["id", "name", "category", "source", "revision", "content_sha256", "status"],
   "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$"
-    },
-    "name": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 160
-    },
-    "description": {
-      "type": "string",
-      "maxLength": 2000
-    },
-    "category": {
-      "type": "string"
-    },
-    "tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "uniqueItems": true
-    },
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 160},
+    "description": {"type": "string", "maxLength": 2000},
+    "category": {"type": "string", "minLength": 1},
+    "tags": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "source": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "url",
-        "path"
-      ],
+      "type": "object", "additionalProperties": false, "required": ["url", "path"],
       "properties": {
-        "url": {
-          "type": "string",
-          "pattern": "^https://"
-        },
-        "path": {
-          "type": "string",
-          "minLength": 1
-        }
+        "url": {"type": "string", "pattern": "^https://[^\\s]+$"},
+        "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"}
       }
     },
-    "revision": {
-      "type": "string",
-      "pattern": "^[a-fA-F0-9]{40}$"
-    },
-    "content_sha256": {
-      "type": "string",
-      "pattern": "^[a-fA-F0-9]{64}$"
-    },
+    "revision": {"type": "string", "pattern": "^[a-fA-F0-9]{40}$"},
+    "content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
     "license": {
-      "type": "object"
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "identifier": {"type": "string", "minLength": 1},
+        "evidence_url": {"type": "string", "pattern": "^https://[^\\s]+$"},
+        "redistribution_permitted": {"type": "boolean"}
+      }
     },
     "security": {
-      "type": "object"
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "result": {"enum": ["pass", "fail", "unknown"]},
+        "reviewed_at_utc": {"type": "string"},
+        "notes": {"type": "string", "maxLength": 2000}
+      }
     },
     "compatibility": {
-      "type": "object"
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "result": {"enum": ["pass", "fail", "unknown"]},
+        "targets": {"type": "array", "items": {"enum": ["ORION", "FLIRA", "generic"]}, "uniqueItems": true}
+      }
     },
     "duplicate_check": {
-      "type": "object"
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "result": {"enum": ["pass", "fail", "unknown"]},
+        "fingerprint": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+      }
     },
-    "status": {
-      "enum": [
-        "discovered",
-        "under_review",
-        "approved",
-        "rejected"
-      ]
-    },
+    "status": {"enum": ["discovered", "under_review", "approved", "rejected"]},
     "approval": {
-      "type": [
-        "object",
-        "null"
-      ]
+      "type": ["object", "null"], "additionalProperties": false,
+      "properties": {
+        "reviewer": {"type": "string", "minLength": 1},
+        "reviewed_at_utc": {"type": "string", "format": "date-time"}
+      }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "approved"}}, "required": ["status"]},
+      "then": {
+        "required": ["license", "security", "compatibility", "duplicate_check", "approval"],
+        "properties": {
+          "license": {"required": ["evidence_url", "redistribution_permitted"], "properties": {"redistribution_permitted": {"const": true}}},
+          "security": {"properties": {"result": {"const": "pass"}}, "required": ["result"]},
+          "compatibility": {"properties": {"result": {"const": "pass"}, "targets": {"minItems": 1}}, "required": ["result", "targets"]},
+          "duplicate_check": {"properties": {"result": {"const": "pass"}}, "required": ["result"]},
+          "approval": {"type": "object", "required": ["reviewer", "reviewed_at_utc"]}
+        }
+      }
+    }
+  ]
 }

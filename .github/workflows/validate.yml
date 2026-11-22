@@ -24,5 +24,7 @@ jobs:
           python-version: "3.12"
       - name: Validate catalog
         run: python scripts/validate_catalog.py
+      - name: Secret hygiene
+        run: python scripts/security_hygiene.py
       - name: Run tests
         run: python -m unittest discover -s tests -v

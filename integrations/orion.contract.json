@@ -1,0 +1,16 @@
+{
+  "contract_version": "1.0",
+  "consumer": "ORION",
+  "registry": "https://github.com/h0596999198-art/AI-SKILLS-INTELLIGENCE",
+  "access": "read-only",
+  "allowed_catalog_statuses": ["approved"],
+  "allow_registry_writeback": false,
+  "allow_project_data_upload": false,
+  "allow_secret_transfer": false,
+  "allow_private_source_upload": false,
+  "allow_automatic_execution": false,
+  "require_local_security_review": true,
+  "require_local_admin_approval": true,
+  "telemetry": "disabled",
+  "consumer_data_boundary": "ORION data, prompts, memory, source, logs, credentials, and runtime state remain in ORION-controlled storage."
+}
